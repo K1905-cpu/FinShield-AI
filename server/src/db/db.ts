@@ -16,8 +16,24 @@ import {
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const DATA_DIR = path.resolve(__dirname, '../../data');
-const DB_FILE = path.join(DATA_DIR, 'finshield_db.json');
+
+function getDbFilePath(): { dataDir: string; dbFile: string } {
+  const candidates = [
+    path.resolve(__dirname, '../../data/finshield_db.json'),
+    path.resolve(process.cwd(), 'server/data/finshield_db.json'),
+    path.resolve(process.cwd(), 'data/finshield_db.json'),
+    path.resolve(__dirname, '../../../server/data/finshield_db.json'),
+  ];
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) {
+      return { dataDir: path.dirname(candidate), dbFile: candidate };
+    }
+  }
+  const defaultDir = path.resolve(process.cwd(), 'server/data');
+  return { dataDir: defaultDir, dbFile: path.join(defaultDir, 'finshield_db.json') };
+}
+
+const { dataDir: DATA_DIR, dbFile: DB_FILE } = getDbFilePath();
 
 export interface DatabaseState {
   users: (User & { passwordHash: string })[];

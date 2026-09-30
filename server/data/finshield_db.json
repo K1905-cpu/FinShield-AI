@@ -71,9 +71,35 @@
       "role": "user",
       "status": "active",
       "createdAt": "2026-09-29T17:31:51.506Z"
+    },
+    {
+      "id": "usr_2114df9d",
+      "name": "Rudra Gupta",
+      "email": "abc@gmail.com",
+      "passwordHash": "$2b$10$btxOdT4rsfLZLXVPCoRZP.c/qTJM/K1UP3.4jkc12MI0XO9qGVXdK",
+      "role": "user",
+      "status": "active",
+      "createdAt": "2026-09-30T03:38:29.822Z"
     }
   ],
   "transactions": [
+    {
+      "id": "TXN-15442537",
+      "userId": "usr_admin_001",
+      "userName": "Chief Risk Officer (Admin)",
+      "userEmail": "admin@finshield.ai",
+      "amount": 500000000000000,
+      "currency": "INR",
+      "merchant": "Crypto",
+      "category": "Crypto Exchange",
+      "location": "Mumbai",
+      "paymentMethod": "credit_card",
+      "deviceId": "DEV-CLIENT-WEB",
+      "timestamp": "2026-09-29T22:01:00.000Z",
+      "status": "legitimate",
+      "riskScore": 61,
+      "riskLevel": "HIGH"
+    },
     {
       "id": "TXN-22658887",
       "userId": "usr_c92b1824",
@@ -34585,9 +34611,73 @@
         }
       ],
       "analyzedAt": "2026-09-29T18:07:06.589Z"
+    },
+    "TXN-15442537": {
+      "id": "FA-TXN-15442537",
+      "transactionId": "TXN-15442537",
+      "riskScore": 61,
+      "riskLevel": "HIGH",
+      "fraudProbability": 58,
+      "explanation": "This transaction was flagged with HIGH risk because the amount is exceptionally high (47424831641.8x historical average), initiated during unusual off-peak hours (03:31), merchant operates in high-risk domain (Crypto Exchange), unknown hardware signature (DEV-CLIENT-WEB), and deviates notably from user historical baseline.",
+      "contributors": [
+        {
+          "factor": "amount_anomaly",
+          "label": "Amount Anomaly",
+          "score": 20,
+          "maxScore": 20,
+          "percentage": 100,
+          "reason": "Transaction amount (₹50,00,00,00,00,00,000) exceeds the critical threshold (₹50,000) and is 47424831641.8x user's historical average (₹10543)"
+        },
+        {
+          "factor": "time_anomaly",
+          "label": "Time Anomaly",
+          "score": 10,
+          "maxScore": 10,
+          "percentage": 100,
+          "reason": "Transaction executed during high-risk sleeping hours (03:31 hrs)"
+        },
+        {
+          "factor": "merchant_risk",
+          "label": "Merchant & Rail Risk",
+          "score": 15,
+          "maxScore": 15,
+          "percentage": 100,
+          "reason": "Merchant category \"Crypto Exchange\" (Crypto) is classified as high-risk"
+        },
+        {
+          "factor": "device_anomaly",
+          "label": "Device Signature Anomaly",
+          "score": 10,
+          "maxScore": 10,
+          "percentage": 100,
+          "reason": "Unrecognized device footprint (DEV-CLIENT-WEB). User typically uses: DEV-THINKPAD-ADMIN, DEV-THINKPAD-ADMIN-BACKUP"
+        },
+        {
+          "factor": "behavioral_anomaly",
+          "label": "Behavioral Profile Deviation",
+          "score": 6,
+          "maxScore": 10,
+          "percentage": 60,
+          "reason": "Transaction behavior deviates from user baseline spend profile"
+        }
+      ],
+      "analyzedAt": "2026-09-30T03:32:34.427Z"
     }
   },
   "fraudAlerts": [
+    {
+      "id": "ALT-5442878",
+      "transactionId": "TXN-15442537",
+      "userId": "usr_admin_001",
+      "userName": "Chief Risk Officer (Admin)",
+      "amount": 500000000000000,
+      "merchant": "Crypto",
+      "severity": "high",
+      "alertType": "High-Value Outlier Anomaly",
+      "reason": "This transaction was flagged with HIGH risk because the amount is exceptionally high (47424831641.8x historical average), initiated during unusual off-peak hours (03:31), merchant operates in high-risk domain (Crypto Exchange), unknown hardware signature (DEV-CLIENT-WEB), and deviates notably from user historical baseline.",
+      "status": "new",
+      "createdAt": "2026-09-30T03:32:34.428Z"
+    },
     {
       "id": "ALT-SIM-96854",
       "transactionId": "TXN-SIM-SUSP-96853",
@@ -35291,8 +35381,8 @@
     },
     "usr_admin_001": {
       "userId": "usr_admin_001",
-      "avgAmount": 10543,
-      "maxAmount": 149585,
+      "avgAmount": 5617977538515,
+      "maxAmount": 500000000000000,
       "frequentLocations": [
         "Mumbai",
         "Ahmedabad",
@@ -35304,8 +35394,8 @@
         "DEV-THINKPAD-ADMIN",
         "DEV-THINKPAD-ADMIN-BACKUP",
         "DEV-UNKNOWN-TOR-77",
-        "DEV-UNKNOWN-TOR-159",
-        "DEV-UNKNOWN-TOR-350"
+        "DEV-CLIENT-WEB",
+        "DEV-UNKNOWN-TOR-159"
       ],
       "commonCategories": [
         "Shopping",
@@ -35317,8 +35407,8 @@
         "Bills",
         "Crypto Exchange"
       ],
-      "totalTransactions": 88,
-      "lastTransactionTimestamp": "2026-09-29T17:18:40.165Z"
+      "totalTransactions": 89,
+      "lastTransactionTimestamp": "2026-09-29T22:01:00.000Z"
     },
     "usr_analyst_001": {
       "userId": "usr_analyst_001",
@@ -35369,9 +35459,117 @@
       ],
       "totalTransactions": 4,
       "lastTransactionTimestamp": "2026-09-29T18:05:36.853Z"
+    },
+    "usr_2114df9d": {
+      "userId": "usr_2114df9d",
+      "avgAmount": 2500,
+      "maxAmount": 10000,
+      "frequentLocations": [
+        "Mumbai"
+      ],
+      "knownDevices": [
+        "DEV-WEB-CLIENT"
+      ],
+      "commonCategories": [
+        "Shopping",
+        "Food",
+        "Bills"
+      ],
+      "totalTransactions": 0,
+      "lastTransactionTimestamp": "2026-09-30T03:38:29.822Z"
     }
   },
   "auditLogs": [
+    {
+      "id": "LOG-41b183d8",
+      "userId": "usr_2114df9d",
+      "userName": "Rudra Gupta",
+      "userRole": "user",
+      "action": "User Registration",
+      "details": "New user registered: abc@gmail.com",
+      "ipAddress": "::1",
+      "timestamp": "2026-09-30T03:38:29.822Z"
+    },
+    {
+      "id": "LOG-a573f864",
+      "userId": "usr_c92b1824",
+      "userName": "Kalp Shah",
+      "userRole": "user",
+      "action": "User Login",
+      "details": "User shahkalp0303@gmail.com (user) authenticated successfully.",
+      "ipAddress": "::1",
+      "timestamp": "2026-09-30T03:37:29.540Z"
+    },
+    {
+      "id": "LOG-b4749152",
+      "userId": "usr_admin_001",
+      "userName": "Chief Risk Officer (Admin)",
+      "userRole": "admin",
+      "action": "Transaction Status Updated",
+      "details": "Transaction TXN-15442537 status changed from 'dismissed' to 'legitimate'.",
+      "ipAddress": "::1",
+      "timestamp": "2026-09-30T03:34:14.445Z"
+    },
+    {
+      "id": "LOG-19dbd96d",
+      "userId": "usr_admin_001",
+      "userName": "Chief Risk Officer (Admin)",
+      "userRole": "admin",
+      "action": "Transaction Status Updated",
+      "details": "Transaction TXN-15442537 status changed from 'confirmed_fraud' to 'dismissed'.",
+      "ipAddress": "::1",
+      "timestamp": "2026-09-30T03:34:11.936Z"
+    },
+    {
+      "id": "LOG-faeaa7c5",
+      "userId": "usr_admin_001",
+      "userName": "Chief Risk Officer (Admin)",
+      "userRole": "admin",
+      "action": "Transaction Status Updated",
+      "details": "Transaction TXN-15442537 status changed from 'suspicious' to 'confirmed_fraud'.",
+      "ipAddress": "::1",
+      "timestamp": "2026-09-30T03:34:09.054Z"
+    },
+    {
+      "id": "LOG-ead0906c",
+      "userId": "usr_admin_001",
+      "userName": "Chief Risk Officer (Admin)",
+      "userRole": "admin",
+      "action": "Transaction Status Updated",
+      "details": "Transaction TXN-15442537 status changed from 'under_review' to 'suspicious'.",
+      "ipAddress": "::1",
+      "timestamp": "2026-09-30T03:34:04.692Z"
+    },
+    {
+      "id": "LOG-3cc718db",
+      "userId": "usr_admin_001",
+      "userName": "Chief Risk Officer (Admin)",
+      "userRole": "admin",
+      "action": "Transaction Status Updated",
+      "details": "Transaction TXN-15442537 status changed from 'suspicious' to 'under_review'.",
+      "ipAddress": "::1",
+      "timestamp": "2026-09-30T03:34:01.322Z"
+    },
+    {
+      "id": "LOG-4aec4294",
+      "userId": "usr_admin_001",
+      "userName": "Chief Risk Officer (Admin)",
+      "userRole": "admin",
+      "action": "Transaction Created",
+      "details": "Transaction TXN-15442537 created for ₹500000000000000. Risk Score: 61/100 (HIGH).",
+      "ipAddress": "::1",
+      "timestamp": "2026-09-30T03:32:34.428Z"
+    },
+    {
+      "id": "LOG-2db6bdba",
+      "userId": "usr_admin_001",
+      "userName": "Chief Risk Officer (Admin)",
+      "userRole": "admin",
+      "action": "User Login",
+      "details": "User admin@finshield.ai (admin) authenticated successfully.",
+      "ipAddress": "::1",
+      "timestamp": "2026-09-30T03:31:26.544Z"
+    },
     {
       "id": "LOG-3590dc0d",
       "userId": "usr_c92b1824",

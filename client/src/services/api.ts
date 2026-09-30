@@ -10,7 +10,9 @@ import {
   ReportItem
 } from '../types/shared';
 
-const API_BASE = '/api';
+const API_BASE = (import.meta as any).env?.VITE_API_URL 
+  ? `${(import.meta as any).env.VITE_API_URL.replace(/\/$/, '')}/api` 
+  : '/api';
 
 function getAuthHeaders(): HeadersInit {
   const token = localStorage.getItem('finshield_token');
