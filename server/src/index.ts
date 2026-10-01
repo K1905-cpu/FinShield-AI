@@ -94,10 +94,7 @@ async function startServer() {
   }
 }
 
-// In serverless environments (like Vercel), export app without calling app.listen()
-if (!process.env.VERCEL) {
-  startServer();
-}
+startServer();
 
 export { app };
 export default app;
