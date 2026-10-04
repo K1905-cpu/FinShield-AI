@@ -19,6 +19,13 @@ import { seedDatabase } from './db/seed.js';
 
 dotenv.config();
 
+process.on('uncaughtException', (err) => {
+  console.error('SERVER UNCAUGHT EXCEPTION:', err);
+});
+process.on('unhandledRejection', (reason) => {
+  console.error('SERVER UNHANDLED REJECTION:', reason);
+});
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
