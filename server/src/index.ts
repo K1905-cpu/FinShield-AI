@@ -26,8 +26,8 @@ process.on('unhandledRejection', (reason) => {
   console.error('SERVER UNHANDLED REJECTION:', reason);
 });
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const _filename = typeof __filename !== 'undefined' ? __filename : '';
+const _dirname = typeof __dirname !== 'undefined' ? __dirname : (typeof process !== 'undefined' ? process.cwd() : '');
 
 const app = express();
 const PORT = process.env.PORT || 5000;

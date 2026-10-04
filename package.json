@@ -2,7 +2,7 @@
   "name": "finshield-ai",
   "version": "1.0.0",
   "description": "FinShield AI - Intelligent Financial Fraud & Risk Detection Platform",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "dev": "concurrently -n \"SERVER,CLIENT\" -c \"blue,green\" \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
     "dev:server": "npm run dev --prefix server",

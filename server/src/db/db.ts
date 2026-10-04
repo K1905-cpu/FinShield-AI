@@ -16,18 +16,18 @@ import {
 } from '../types/shared.js';
 import { initialDatabaseState } from './initialData.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const _filename = typeof __filename !== 'undefined' ? __filename : '';
+const _dirname = typeof __dirname !== 'undefined' ? __dirname : (typeof process !== 'undefined' ? process.cwd() : '');
 
 function getDbFilePath(): { dataDir: string; dbFile: string } {
   const candidates = [
-    path.resolve(__dirname, '../data/finshield_db.json'),
-    path.resolve(__dirname, '../../data/finshield_db.json'),
+    path.resolve(_dirname, '../data/finshield_db.json'),
+    path.resolve(_dirname, '../../data/finshield_db.json'),
     path.resolve(process.cwd(), 'server/data/finshield_db.json'),
     path.resolve(process.cwd(), 'server/dist/data/finshield_db.json'),
     path.resolve(process.cwd(), 'data/finshield_db.json'),
     path.resolve(process.cwd(), 'dist/data/finshield_db.json'),
-    path.resolve(__dirname, '../../../server/data/finshield_db.json'),
+    path.resolve(_dirname, '../../../server/data/finshield_db.json'),
     path.join(os.tmpdir(), 'finshield_db.json')
   ];
   for (const candidate of candidates) {
@@ -103,8 +103,8 @@ class DatabaseService {
       const candidates = [
         path.join(os.tmpdir(), 'finshield_db.json'),
         DB_FILE,
-        path.resolve(__dirname, '../data/finshield_db.json'),
-        path.resolve(__dirname, '../../data/finshield_db.json'),
+        path.resolve(_dirname, '../data/finshield_db.json'),
+        path.resolve(_dirname, '../../data/finshield_db.json'),
         path.resolve(process.cwd(), 'server/data/finshield_db.json'),
         path.resolve(process.cwd(), 'server/dist/data/finshield_db.json'),
         path.resolve(process.cwd(), 'data/finshield_db.json'),
