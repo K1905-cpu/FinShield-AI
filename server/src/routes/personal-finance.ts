@@ -4,7 +4,7 @@ import { authenticate, AuthRequest } from '../middleware/auth.js';
 
 const router = Router();
 
-router.get('/', authenticate, (req: AuthRequest, res: Response) => {
+const getFinanceSummary = (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user!.id;
     const summary = db.calculatePersonalFinance(userId);
@@ -13,6 +13,9 @@ router.get('/', authenticate, (req: AuthRequest, res: Response) => {
     console.error('Error fetching personal finance summary:', err);
     res.status(500).json({ error: 'Failed to fetch personal finance analytics' });
   }
-});
+};
+
+router.get('/', authenticate, getFinanceSummary);
+router.get('/summary', authenticate, getFinanceSummary);
 
 export default router;
