@@ -102,7 +102,7 @@ async function startServer() {
       await seedDatabase(false);
     }
 
-    if (!process.env.VERCEL) {
+    if (!process.env.VERCEL || process.env.PORT) {
       app.listen(PORT, () => {
         console.log(`=======================================================`);
         console.log(`  FinShield AI Server is running on port ${PORT}`);
@@ -116,11 +116,9 @@ async function startServer() {
   }
 }
 
-// In local mode, start the listener. On Vercel, seed if needed.
-if (!process.env.VERCEL) {
+// Start listener in local development OR in environments where PORT is provided (e.g. Vercel Services)
+if (!process.env.VERCEL || process.env.PORT) {
   startServer();
-} else if (!db.isSeeded()) {
-  seedDatabase(false).catch(err => console.error('Vercel seed notice:', err));
 }
 
 export { app };
