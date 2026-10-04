@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "type": "commonjs",
   "scripts": {
-    "build": "npx esbuild src/index.ts --bundle --platform=node --target=node18 --format=cjs --packages=external \"--footer:js=module.exports = app; module.exports.default = app; module.exports.app = app;\" --outfile=dist/index.js && node -e \"const fs = require('fs'); fs.copyFileSync('dist/index.js', 'index.js'); if (fs.existsSync('../api')) fs.copyFileSync('dist/index.js', '../api/index.js'); if (fs.existsSync('../dist')) fs.copyFileSync('dist/index.js', '../dist/index.js'); console.log('Universal server bundle built.');\"",
+    "build": "npx esbuild src/index.ts --bundle --platform=node --target=node18 --format=cjs \"--footer:js=module.exports = app; module.exports.default = app; module.exports.app = app;\" --outfile=dist/index.js && node -e \"const fs = require('fs'); fs.copyFileSync('dist/index.js', 'index.js'); if (fs.existsSync('../api')) fs.copyFileSync('dist/index.js', '../api/index.js'); if (fs.existsSync('../dist')) fs.copyFileSync('dist/index.js', '../dist/index.js'); console.log('Universal server bundle built.');\"",
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts",
     "seed": "tsx src/db/seed.ts"
