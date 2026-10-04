@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import { fileURLToPath } from 'url';
 import { 
   User, 
@@ -19,10 +20,14 @@ const __dirname = path.dirname(__filename);
 
 function getDbFilePath(): { dataDir: string; dbFile: string } {
   const candidates = [
+    path.resolve(__dirname, '../data/finshield_db.json'),
     path.resolve(__dirname, '../../data/finshield_db.json'),
     path.resolve(process.cwd(), 'server/data/finshield_db.json'),
+    path.resolve(process.cwd(), 'server/dist/data/finshield_db.json'),
     path.resolve(process.cwd(), 'data/finshield_db.json'),
+    path.resolve(process.cwd(), 'dist/data/finshield_db.json'),
     path.resolve(__dirname, '../../../server/data/finshield_db.json'),
+    path.join(os.tmpdir(), 'finshield_db.json')
   ];
   for (const candidate of candidates) {
     if (fs.existsSync(candidate)) {
@@ -94,18 +99,30 @@ class DatabaseService {
 
   private init() {
     try {
-      if (!fs.existsSync(DATA_DIR)) {
-        fs.mkdirSync(DATA_DIR, { recursive: true });
-      }
+      const candidates = [
+        DB_FILE,
+        path.join(os.tmpdir(), 'finshield_db.json'),
+        path.resolve(__dirname, '../data/finshield_db.json'),
+        path.resolve(__dirname, '../../data/finshield_db.json'),
+        path.resolve(process.cwd(), 'server/data/finshield_db.json'),
+        path.resolve(process.cwd(), 'server/dist/data/finshield_db.json'),
+        path.resolve(process.cwd(), 'data/finshield_db.json'),
+        path.resolve(process.cwd(), 'dist/data/finshield_db.json')
+      ];
 
-      if (fs.existsSync(DB_FILE)) {
-        const raw = fs.readFileSync(DB_FILE, 'utf-8');
-        this.state = JSON.parse(raw);
-        // Ensure default rules if missing
-        if (!this.state.fraudRules) {
-          this.state.fraudRules = DEFAULT_RULES;
+      for (const p of candidates) {
+        if (fs.existsSync(p)) {
+          const raw = fs.readFileSync(p, 'utf-8');
+          const parsed = JSON.parse(raw);
+          if (parsed && Array.isArray(parsed.transactions) && parsed.transactions.length > 0) {
+            this.state = parsed;
+            if (!this.state.fraudRules) {
+              this.state.fraudRules = DEFAULT_RULES;
+            }
+            this.isLoaded = true;
+            return;
+          }
         }
-        this.isLoaded = true;
       }
     } catch (err) {
       console.error('Failed reading database file, starting fresh', err);
@@ -114,12 +131,21 @@ class DatabaseService {
 
   public saveSync() {
     try {
-      if (!fs.existsSync(DATA_DIR)) {
-        fs.mkdirSync(DATA_DIR, { recursive: true });
+      try {
+        if (!fs.existsSync(DATA_DIR)) {
+          fs.mkdirSync(DATA_DIR, { recursive: true });
+        }
+      } catch {
+        // Read-only filesystem on Vercel
       }
       fs.writeFileSync(DB_FILE, JSON.stringify(this.state, null, 2), 'utf-8');
     } catch (err) {
-      console.error('Failed to write database file', err);
+      try {
+        const tmpFile = path.join(os.tmpdir(), 'finshield_db.json');
+        fs.writeFileSync(tmpFile, JSON.stringify(this.state, null, 2), 'utf-8');
+      } catch {
+        // State remains in memory safely
+      }
     }
   }
 

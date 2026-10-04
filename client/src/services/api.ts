@@ -40,7 +40,13 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
     headers,
   });
 
-  const data = await response.json().catch(() => ({ error: 'Failed to parse JSON response' }));
+  let data: any;
+  const rawText = await response.text();
+  try {
+    data = JSON.parse(rawText);
+  } catch {
+    data = { error: rawText.slice(0, 150) || `HTTP ${response.status}: ${response.statusText}` };
+  }
 
   if (!response.ok) {
     throw new Error(data.error || `HTTP ${response.status}: ${response.statusText}`);
