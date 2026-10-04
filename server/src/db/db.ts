@@ -14,6 +14,7 @@ import {
   PersonalFinanceSummary,
   ReportItem
 } from '../types/shared.js';
+import { initialDatabaseState } from './initialData.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -78,7 +79,7 @@ export const DEFAULT_RULES: FraudRuleConfig = {
 };
 
 class DatabaseService {
-  private state: DatabaseState = {
+  private state: DatabaseState = (initialDatabaseState as any) || {
     users: [],
     transactions: [],
     fraudAnalysis: {},
@@ -90,7 +91,7 @@ class DatabaseService {
     reports: []
   };
 
-  private isLoaded = false;
+  private isLoaded = true;
   private saveTimeout: NodeJS.Timeout | null = null;
 
   constructor() {
@@ -100,8 +101,8 @@ class DatabaseService {
   private init() {
     try {
       const candidates = [
-        DB_FILE,
         path.join(os.tmpdir(), 'finshield_db.json'),
+        DB_FILE,
         path.resolve(__dirname, '../data/finshield_db.json'),
         path.resolve(__dirname, '../../data/finshield_db.json'),
         path.resolve(process.cwd(), 'server/data/finshield_db.json'),
@@ -125,7 +126,7 @@ class DatabaseService {
         }
       }
     } catch (err) {
-      console.error('Failed reading database file, starting fresh', err);
+      console.error('Failed reading database file, using bundled state', err);
     }
   }
 
